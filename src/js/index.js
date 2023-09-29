@@ -1,27 +1,31 @@
-// import axios from 'axios';
-
-import { fetchBreeds } from './cat-api';
-
-// axios.defaults.headers.common['x-api-key' =
-//   'live_VOvT6IAsVg3apVKiZYzTEFlSsXzX8nEsF1JTdvq7UHoVVXUDRSRohjOihM0jsZDU';
+import { fetchBreeds, fetchCatByBreed } from './cat-api';
 
 const select = document.querySelector('.breed-select');
 const divCat = document.querySelector('.cat-info');
 
-select.addEventListener('change', onClickSelect);
+select.addEventListener('change', onChangeSelect);
 
-function onClickSelect() {
+fetchBreeds().then(response => {
+  const markup = response
+    .map(cat => {
+      return `<option value="${cat.id}">${cat.name}</option>`;
+    })
+    .join('');
+  select.innerHTML = markup;
+});
+
+function onChangeSelect() {
   const selectedCat = select.value;
-  fetchBreeds(selectedCat).then(catInfo => {
-    renderPage(catInfo[0]);
+  fetchCatByBreed(selectedCat).then(catInfo => {
+    renderPage(catInfo);
   });
 }
 
-function renderPage({ url, name, description, temperament }) {
-  const markup = `<img src="${url}" alt="cat image">
-        <h2>${name}</h2>
-        <p>${description}</p>
-        <p>${temperament}</p`;
+function renderPage(info) {
+  const markup = `<img src="${info[0].url}" alt="cat image" width = 600 height = 400>
+        <h2>${info[0].breeds[0].name}</h2>
+        <p>${info[0].breeds[0].description}</p>
+        <p>${info[0].breeds[0].temperament}</p>`;
 
   divCat.innerHTML = markup;
 }
