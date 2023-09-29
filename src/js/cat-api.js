@@ -10,10 +10,12 @@ const options = {
 
 export function fetchBreeds() {
   const url = `${BASE_URL}${END_POINT_ALL_BREEDS}`;
+
   return fetch(url, options).then(response => {
     if (!response.ok) {
-      throw new Error(response.status);
+      throw new Error(Notiflix.Notify.warning(response.status));
     }
+
     return response.json();
   });
 }
@@ -23,7 +25,7 @@ export function fetchCatByBreed(catId) {
 
   return fetch(url, options).then(response => {
     if (!response.ok) {
-      throw new Error(response.status);
+      throw new Error(Notiflix.Notify.warning(response.status));
     }
     return response.json();
   });
