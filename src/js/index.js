@@ -1,4 +1,5 @@
 import SlimSelect from 'slim-select';
+import 'slim-select/dist/slimselect.css';
 import Notiflix from 'notiflix';
 import { fetchBreeds, fetchCatByBreed } from './cat-api';
 
@@ -7,16 +8,17 @@ const divCat = document.querySelector('.cat-info');
 const loaderText = document.querySelector('.loader-text');
 const errorMessage = document.querySelector('.error');
 
-select.addEventListener('change', onChangeSelect);
+select.addEventListener('beforeChange', onChangeSelect);
 
-// new SlimSelect({
-//   select: '.breed-select',
-// });
+const slimSelectEl = new SlimSelect({
+  select: '.breed-select',
+});
 
 errorMessage.classList.add('hidden');
 
 fetchBreeds()
   .then(response => {
+    slimSelectEl.setData();
     const markup = response
       .map(cat => {
         return `<option value="${cat.id}">${cat.name}</option>`;
