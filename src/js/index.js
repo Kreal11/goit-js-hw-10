@@ -14,7 +14,6 @@ select.addEventListener('change', onChangeSelect);
 // });
 
 errorMessage.classList.add('hidden');
-select.classList.add('hidden');
 
 fetchBreeds()
   .then(response => {
@@ -24,6 +23,7 @@ fetchBreeds()
       })
       .join('');
     select.innerHTML = markup;
+    select.classList.remove('hidden');
   })
   .catch(error => {
     Notiflix.Notify.failure(
@@ -32,13 +32,13 @@ fetchBreeds()
   })
   .finally(() => {
     loaderText.classList.add('hidden');
-    select.classList.remove('hidden');
   });
 
 function onChangeSelect() {
   const selectedCat = select.value;
   loaderText.classList.remove('hidden');
   select.disabled = true;
+  divCat.classList.add('hidden');
   fetchCatByBreed(selectedCat)
     .then(catInfo => {
       renderPage(catInfo);
@@ -51,6 +51,7 @@ function onChangeSelect() {
     .finally(() => {
       loaderText.classList.add('hidden');
       select.disabled = false;
+      divCat.classList.remove('hidden');
     });
 }
 
