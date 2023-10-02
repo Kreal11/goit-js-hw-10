@@ -8,23 +8,21 @@ const divCat = document.querySelector('.cat-info');
 const loaderText = document.querySelector('.loader-text');
 const errorMessage = document.querySelector('.error');
 
-select.addEventListener('beforeChange', onChangeSelect);
-
-const slimSelectEl = new SlimSelect({
-  select: '.breed-select',
-});
+select.addEventListener('change', onChangeSelect);
 
 errorMessage.classList.add('hidden');
 
 fetchBreeds()
   .then(response => {
-    slimSelectEl.setData();
     const markup = response
       .map(cat => {
         return `<option value="${cat.id}">${cat.name}</option>`;
       })
       .join('');
     select.innerHTML = markup;
+    new SlimSelect({
+      select: '.breed-select',
+    });
     select.classList.remove('hidden');
   })
   .catch(error => {
